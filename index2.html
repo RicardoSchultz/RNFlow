@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfólio PowerApps</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background: #1f2937;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    .search-box {
+      margin-bottom: 20px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .tags {
+      margin-top: 10px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e5e7eb;
+      border-radius: 6px;
+      padding: 5px 10px;
+      margin: 3px;
+      font-size: 12px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #2563eb;
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Meu Portfólio PowerApps</h1>
+  <p>Projetos desenvolvidos com Power Platform</p>
+</header>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Buscar projetos...">
+  </div>
+
+  <div class="grid" id="projectGrid"></div>
+</div>
+
+<script>
+  const projects = [
+    {
+      name: "App de Chamados",
+      description: "Sistema de abertura e acompanhamento de chamados integrado ao SharePoint.",
+      tags: ["PowerApps", "SharePoint", "Automate"],
+      link: "#"
+    },
+    {
+      name: "Gestão de Demandas",
+      description: "Aplicativo para controle de demandas internas com aprovação automática.",
+      tags: ["PowerApps", "Power Automate"],
+      link: "#"
+    },
+    {
+      name: "Controle de Ativos",
+      description: "Gestão de ativos com QR Code e inventário digital.",
+      tags: ["PowerApps", "Dataverse"],
+      link: "#"
+    }
+  ];
+
+  const grid = document.getElementById("projectGrid");
+  const searchInput = document.getElementById("searchInput");
+
+  function renderProjects(list) {
+    grid.innerHTML = "";
+
+    list.forEach(project => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        <h3>${project.name}</h3>
+        <p>${project.description}</p>
+        <div class="tags">
+          ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}
+        </div>
+        <a href="${project.link}" class="btn" target="_blank">Ver Projeto</a>
+      `;
+
+      grid.appendChild(card);
+    });
+  }
+
+  searchInput.addEventListener("input", () => {
+    const value = searchInput.value.toLowerCase();
+
+    const filtered = projects.filter(p =>
+      p.name.toLowerCase().includes(value) ||
+      p.description.toLowerCase().includes(value) ||
+      p.tags.join(" ").toLowerCase().includes(value)
+    );
+
+    renderProjects(filtered);
+  });
+
+  renderProjects(projects);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalhes do Projeto</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+
+    .low { background: #065f46; }
+    .medium { background: #92400e; }
+    .high { background: #7f1d1d; }
+
+    .hero img {
+      width: 100%;
+      border-radius: 16px;
+      margin: 20px 0;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    .section h2 {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 5px;
+    }
+
+    .tags {
+      margin-top: 10px;
+    }
+
+    .tag {
+      background: #1f2937;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin: 2px;
+      display: inline-block;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .buttons {
+      margin-top: 30px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 10px 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #fff;
+      text-align: center;
+    }
+
+    .primary { background: #2563eb; }
+    .secondary { background: #374151; }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <a href="index.html" class="back">← Voltar</a>
+
+  <h1 id="title"></h1>
+  <span id="level" class="badge"></span>
+
+  <div class="hero">
+    <img id="mainImage" src="" />
+  </div>
+
+  <div class="section">
+    <h2>Descrição</h2>
+    <p id="description"></p>
+  </div>
+
+  <div class="section">
+    <h2>Problema</h2>
+    <p id="problem"></p>
+  </div>
+
+  <div class="section">
+    <h2>Solução</h2>
+    <p id="solution"></p>
+  </div>
+
+  <div class="section">
+    <h2>Resultados</h2>
+    <p id="results"></p>
+  </div>
+
+  <div class="section">
+    <h2>Tecnologias</h2>
+    <div class="tags" id="tags"></div>
+  </div>
+
+  <div class="section">
+    <h2>Galeria</h2>
+    <div class="gallery" id="gallery"></div>
+  </div>
+
+  <div class="buttons">
+    <a id="demo" class="btn primary" target="_blank">Ver Demo</a>
+    <a id="repo" class="btn secondary" target="_blank">Documentação</a>
+  </div>
+
+</div>
+
+<div class="modal" id="modal">
+  <img id="modalImg" />
+</div>
+
+<script>
+
+// Simulação de dados (depois você pode integrar com SharePoint ou querystring)
+const project = {
+  name: "Central de Chamados",
+  level: "high",
+  description: "Sistema completo de gestão de chamados.",
+  problem: "Processos manuais e falta de controle de SLA.",
+  solution: "Aplicativo PowerApps integrado ao SharePoint e Power Automate.",
+  results: "Redução de 40% no tempo de atendimento.",
+  image: "https://via.placeholder.com/800x400",
+  tags: ["PowerApps", "SharePoint", "Power Automate"],
+  gallery: [
+    "https://via.placeholder.com/300",
+    "https://via.placeholder.com/301",
+    "https://via.placeholder.com/302"
+  ],
+  demo: "#",
+  repo: "#"
+};
+
+// Renderização
+
+document.getElementById("title").textContent = project.name;
+
+const levelEl = document.getElementById("level");
+levelEl.textContent = project.level.toUpperCase();
+levelEl.classList.add(project.level);
+
+document.getElementById("description").textContent = project.description;
+document.getElementById("problem").textContent = project.problem;
+document.getElementById("solution").textContent = project.solution;
+document.getElementById("results").textContent = project.results;
+
+document.getElementById("mainImage").src = project.image;
+
+document.getElementById("demo").href = project.demo;
+document.getElementById("repo").href = project.repo;
+
+// Tags
+const tagsDiv = document.getElementById("tags");
+project.tags.forEach(t => {
+  const span = document.createElement("span");
+  span.className = "tag";
+  span.textContent = t;
+  tagsDiv.appendChild(span);
+});
+
+// Galeria
+const gallery = document.getElementById("gallery");
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modalImg");
+
+project.gallery.forEach(src => {
+  const img = document.createElement("img");
+  img.src = src;
+
+  img.onclick = () => {
+    modal.style.display = "flex";
+    modalImg.src = src;
+  };
+
+  gallery.appendChild(img);
+});
+
+modal.onclick = () => modal.style.display = "none";
+
+</script>
+
+</body>
+</html>
