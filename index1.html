@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfólio Premium PowerApps</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    header {
+      padding: 60px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 40px;
+    }
+
+    header p {
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .filters button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      background: #1f2937;
+      color: #fff;
+    }
+
+    .filters button.active {
+      background: #2563eb;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: #111827;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .low { background: #065f46; }
+    .medium { background: #92400e; }
+    .high { background: #7f1d1d; }
+
+    .tags {
+      margin-top: 10px;
+    }
+
+    .tag {
+      background: #1f2937;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin: 2px;
+      display: inline-block;
+    }
+
+    .card-buttons {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #374151;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Portfólio PowerApps</h1>
+  <p>Soluções desenvolvidas com foco em automação e eficiência</p>
+</header>
+
+<div class="container">
+
+  <div class="filters" id="filters"></div>
+
+  <div class="grid" id="grid"></div>
+
+</div>
+
+<script>
+
+const projects = [
+  {
+    name: "Central de Chamados",
+    category: "TI",
+    level: "high",
+    description: "Gestão completa de chamados com SLA, notificações e integração com SharePoint.",
+    image: "images/AdminSolicitacoes.jpg",
+    tags: ["PowerApps", "Power Automate", "SharePoint"],
+    demo: "#",
+    details: "detalhes.html"
+  },
+  {
+    name: "Gestão de Demandas",
+    category: "Operações",
+    level: "medium",
+    description: "Controle de demandas internas com fluxo de aprovação automatizado.",
+    image: "https://via.placeholder.com/400x200",
+    tags: ["PowerApps", "Automate"],
+    demo: "#",
+    details: "detalhes.html"
+  },
+  {
+    name: "Controle de Ativos",
+    category: "Patrimônio",
+    level: "high",
+    description: "Inventário com QR Code e rastreabilidade completa.",
+    image: "https://via.placeholder.com/400x200",
+    tags: ["PowerApps", "Dataverse"],
+    demo: "#",
+    details: "detalhes.html"
+  }
+];
+
+const grid = document.getElementById("grid");
+const filtersDiv = document.getElementById("filters");
+
+const categories = ["Todos", ...new Set(projects.map(p => p.category))];
+let selected = "Todos";
+
+function renderFilters() {
+  filtersDiv.innerHTML = "";
+  categories.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.textContent = cat;
+    if (cat === selected) btn.classList.add("active");
+
+    btn.onclick = () => {
+      selected = cat;
+      renderFilters();
+      renderProjects();
+    };
+
+    filtersDiv.appendChild(btn);
+  });
+}
+
+function renderProjects() {
+  grid.innerHTML = "";
+
+  const filtered = selected === "Todos"
+    ? projects
+    : projects.filter(p => p.category === selected);
+
+  filtered.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <img src="${p.image}">
+      <div class="card-content">
+        <span class="badge ${p.level}">${p.level.toUpperCase()}</span>
+        <h3>${p.name}</h3>
+        <p>${p.description}</p>
+
+        <div class="tags">
+          ${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}
+        </div>
+
+        <div class="card-buttons">
+          <a href="${p.demo}" class="btn btn-primary" target="_blank">Demo</a>
+          <a href="${p.details}" class="btn btn-secondary" target="_blank">Detalhes</a>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+renderFilters();
+renderProjects();
+
+</script>
+
+</body>
+</html>
